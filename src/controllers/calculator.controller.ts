@@ -4,6 +4,7 @@ import { paths } from '../models/openapi';
 
 import CalculatorService from '../services/calculator.service';
 import { ILog } from '../models/DB/logRequest.model';
+import { calculatorSchema } from '../validators/calculator.validator';
 
 @injectable()
 class CalculatorController {
@@ -13,10 +14,14 @@ class CalculatorController {
     this.calculatorService = container.resolve(CalculatorService);
   }
 
-  createBook = async (req: Request, res: Response): Promise<void> => {
-    const operation: paths["/api/calculator"]["post"]["requestBody"]["content"]["application/json"] = req.body;
+  calculate = async (req: Request, res: Response): Promise<void> => {
     try {
-      const result = await this.calculatorService.calculate(operation.number1, operation.number2, operation.operation);
+      const operation: paths["/api/calculator"]["post"]["requestBody"]["content"]["application/json"] = req.body;
+      const { error } = calculatorSchema.validate(operation);
+      if (error) {
+        throw new Error(error.message);
+      }
+      const result: ILog = await this.calculatorService.calculate(operation.number1, operation.number2, operation.operation);
       res.status(201).json(result);
     } catch (error: any) {
       res.status(400).json({ message: error.message });

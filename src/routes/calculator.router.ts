@@ -7,15 +7,15 @@ import CalculatorController from '../controllers/calculator.controller';
 export class CalculatorRouter {
 
   public router: Router;
-  bookController: CalculatorController;
+  calculateController: CalculatorController;
 
   constructor() {
     this.router = Router();
-    this.bookController = container.resolve(CalculatorController);
+    this.calculateController = container.resolve(CalculatorController);
     this.initializeRoutes();
   }
 
   private initializeRoutes() {
-    this.router.post('/calculator', this.bookController.createBook);
+    this.router.post('/calculator', this.calculateController.calculate);
   }
 }
