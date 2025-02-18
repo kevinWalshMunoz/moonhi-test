@@ -8,7 +8,7 @@ import swaggerUi from 'swagger-ui-express';
 import { container } from 'tsyringe';
 import mongoose from 'mongoose';
 
-import { TestRouter } from './routes/book.router';
+import { CalculatorRouter } from './routes/calculator.router';
 
 dotenv.config();
 
@@ -33,8 +33,8 @@ class WebServer {
   }
 
   private createRoutes(): void {
-    const testRouter = container.resolve(TestRouter);
-    this._app.use('/api', testRouter.router);
+    const calculatorRouter = container.resolve(CalculatorRouter);
+    this._app.use('/api', calculatorRouter.router);
   }
 
   private startServer(): void {
