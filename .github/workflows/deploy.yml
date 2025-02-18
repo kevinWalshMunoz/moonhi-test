@@ -3,28 +3,28 @@ name: Deploy Node.js API to AWS EC2
 on:
   push:
     branches:
-      - develop  # Se ejecuta en cada push a la rama "develop test"
+      - develop
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Checkout código
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: 📦 Instalar Node.js
+      - name: Install Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
 
-      - name: 📦 Instalar dependencias
+      - name: Install dependecies
         run: npm install
 
-      - name: 🛠 Construir la aplicación (si usas TypeScript)
+      - name: Build app
         run: npm run build
 
-      - name: 📂 Copiar archivos a EC2
+      - name: Copy files to EC2
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -33,7 +33,7 @@ jobs:
           source: "."
           target: "/home/ubuntu/api"
 
-      - name: 🚀 Ejecutar la API en EC2
+      - name: Run API in EC2
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -42,4 +42,4 @@ jobs:
           script: |
             cd /home/ubuntu/api
             npm install
-            pm2 restart all || pm2 start npm --name "api" -- start
+            pm2 restart all || pm2 start npm --name "app-server" -- start
