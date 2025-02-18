@@ -33,6 +33,19 @@ jobs:
           source: "."
           target: "/home/ubuntu/api"
 
+      - name: Create .env in EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          script: |
+            cd /home/ubuntu/api
+            echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
+            echo "PORT=${{ secrets.PORT }}" >> .env
+            echo "BASEURL=${{ secrets.BASEURL }}" >> .env
+            cat .env  # Verifica el contenido (puedes eliminar esta línea después)        
+
       - name: Run API in EC2
         uses: appleboy/ssh-action@master
         with:

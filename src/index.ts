@@ -51,7 +51,7 @@ class WebServer {
     openapiYaml = openapiYaml.replace('${API_BASE_URL}', process.env.baseURL || '');
 
     this._app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(undefined, {
-      swaggerOptions: { url: `${process.env.baseURL}/openapi.yaml` }
+      swaggerOptions: { url: `${process.env.BASEURL}/openapi.yaml` }
     }));
 
     this._app.get('/openapi.yaml', (req, res) => {
