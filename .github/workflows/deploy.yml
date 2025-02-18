@@ -43,7 +43,7 @@ jobs:
             cd /home/ubuntu/api
             echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
             echo "PORT=${{ secrets.PORT }}" >> .env
-            echo "BASEURL=${{ secrets.BASEURL }}" >> .env
+            echo "BASE_URL=${{ secrets.BASE_URL }}" >> .env
             cat .env  # Verifica el contenido (puedes eliminar esta línea después)        
 
       - name: Run API in EC2
