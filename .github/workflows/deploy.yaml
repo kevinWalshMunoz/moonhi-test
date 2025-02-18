@@ -3,7 +3,7 @@ name: Deploy Node.js API to AWS EC2
 on:
   push:
     branches:
-      - main  # Se ejecuta en cada push a la rama "main"
+      - develop  # Se ejecuta en cada push a la rama "develop"
 
 jobs:
   deploy:
