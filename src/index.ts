@@ -48,10 +48,10 @@ class WebServer {
 
   private createDocsAndSwagger(): void {
     let openapiYaml = fs.readFileSync('./openapi.yaml', 'utf8');
-    openapiYaml = openapiYaml.replace('${API_BASE_URL}', process.env.baseURL || '');
+    openapiYaml = openapiYaml.replace('${API_BASE_URL}', process.env.BASE_URL || '');
 
     this._app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(undefined, {
-      swaggerOptions: { url: `${process.env.BASEURL}/openapi.yaml` }
+      swaggerOptions: { url: `${process.env.BASE_URL}/openapi.yaml` }
     }));
 
     this._app.get('/openapi.yaml', (req, res) => {
