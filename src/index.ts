@@ -7,6 +7,7 @@ import fs from 'fs';
 import swaggerUi from 'swagger-ui-express';
 import { container } from 'tsyringe';
 import mongoose from 'mongoose';
+import cors from 'cors';
 
 import { CalculatorRouter } from './routes/calculator.router';
 
@@ -18,6 +19,7 @@ class WebServer {
 
   constructor() {
     this._app = express();
+    this._app.use(cors());
     this.setServerOptions();
     this.createRoutes();
     this.startServer();
@@ -45,10 +47,11 @@ class WebServer {
   }
 
   private createDocsAndSwagger(): void {
-    const openapiYaml = fs.readFileSync('./openapi.yaml', 'utf8');
+    let openapiYaml = fs.readFileSync('./openapi.yaml', 'utf8');
+    openapiYaml = openapiYaml.replace('${API_BASE_URL}', process.env.baseURL || '');
 
     this._app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(undefined, {
-      swaggerOptions: { url: '/openapi.yaml' }
+      swaggerOptions: { url: `${process.env.baseURL}/openapi.yaml` }
     }));
 
     this._app.get('/openapi.yaml', (req, res) => {

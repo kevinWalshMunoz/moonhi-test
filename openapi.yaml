@@ -5,7 +5,7 @@ info:
   description: API for performing calculator operations
 
 servers:
-  - url: http://localhost:3000
+  - url: ${API_BASE_URL}
     description: Local development server
 
 paths:
