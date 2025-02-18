@@ -4,83 +4,79 @@
  */
 
 export interface paths {
-    "/api/test/{id}": {
+    "/api/calculator": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
+        get?: never;
+        put?: never;
         /**
-         * Retrieve a single user by ID
-         * @description Fetches a single user from the system based on the provided `id` parameter.
-         *     This endpoint returns user details, including ID, name, email, and role.
+         * Perform a calculation
+         * @description Performs a calculation based on the provided numbers and operation.
          *
          */
-        get: {
+        post: {
             parameters: {
                 query?: never;
                 header?: never;
-                path: {
-                    /** @description The unique identifier of the user to retrieve */
-                    id: number;
-                };
+                path?: never;
                 cookie?: never;
             };
-            requestBody?: never;
+            requestBody: {
+                content: {
+                    "application/json": {
+                        /** @example 5 */
+                        number1: number;
+                        /** @example 3 */
+                        number2: number;
+                        /** @example + */
+                        operation: string;
+                    };
+                };
+            };
             responses: {
-                /** @description Successfully retrieved user details */
-                200: {
+                /** @description Calculation result */
+                201: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content: {
                         "application/json": {
-                            /** @example 1 */
-                            id?: number;
-                            /** @example John Doe */
-                            name?: string;
+                            /** @example + */
+                            operation?: string;
+                            /** @example 5 */
+                            number1?: number;
+                            /** @example 3 */
+                            number2?: number;
+                            /** @example 8 */
+                            result?: number;
                             /**
-                             * Format: email
-                             * @example johndoe@example.com
+                             * Format: date-time
+                             * @example 2023-10-01T12:00:00Z
                              */
-                            email?: string;
-                            /**
-                             * @example user
-                             * @enum {string}
-                             */
-                            role?: "admin" | "user" | "guest";
+                            timestamp?: string;
+                            /** @example 100 */
+                            responseTime?: number;
                         };
                     };
                 };
-                /** @description Invalid ID supplied (must be a number) */
+                /** @description Invalid input */
                 400: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content: {
                         "application/json": {
-                            /** @example Invalid ID format. ID must be a number. */
-                            error?: string;
-                        };
-                    };
-                };
-                /** @description User not found */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            /** @example User with ID 1 not found. */
-                            error?: string;
+                            /** @example Invalid operator */
+                            message?: string;
                         };
                     };
                 };
             };
         };
-        put?: never;
-        post?: never;
         delete?: never;
         options?: never;
         head?: never;

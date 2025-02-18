@@ -1,78 +1,75 @@
 openapi: 3.0.0
 info:
-  title: Test API
+  title: Calculator API
   version: 1.0.0
-  description: API for managing test posts
+  description: API for performing calculator operations
 
 servers:
   - url: http://localhost:3000
     description: Local development server
 
 paths:
-  /api/test/{id}:
-    get:
-      summary: Retrieve a single user by ID
+  /api/calculator:
+    post:
+      summary: Perform a calculation
       description: |
-        Fetches a single user from the system based on the provided `id` parameter.
-        This endpoint returns user details, including ID, name, email, and role.
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: The unique identifier of the user to retrieve
-          schema:
-            type: integer
-            example: 1
+        Performs a calculation based on the provided numbers and operation.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - number1
+                - number2
+                - operation
+              properties:
+                number1:
+                  type: number
+                  example: 5
+                number2:
+                  type: number
+                  example: 3
+                operation:
+                  type: string
+                  example: "+"
       responses:
-        "200":
-          description: Successfully retrieved user details
+        "201":
+          description: Calculation result
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  id:
-                    type: integer
-                    example: 1
-                  name:
+                  operation:
                     type: string
-                    example: "John Doe"
-                  email:
+                    example: "+"
+                  number1:
+                    type: number
+                    example: 5
+                  number2:
+                    type: number
+                    example: 3
+                  result:
+                    type: number
+                    example: 8
+                  timestamp:
                     type: string
-                    format: email
-                    example: "johndoe@example.com"
-                  role:
-                    type: string
-                    enum: [admin, user, guest]
-                    example: "user"
+                    format: date-time
+                    example: "2023-10-01T12:00:00Z"
+                  responseTime:
+                    type: number
+                    example: 100
         "400":
-          description: Invalid ID supplied (must be a number)
+          description: Invalid input
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  error:
+                  message:
                     type: string
-                    example: "Invalid ID format. ID must be a number."
-        "404":
-          description: User not found
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: "User with ID 1 not found."
-      security:
-        - BearerAuth: []
+                    example: "Invalid operator"
       tags:
-        - Users
-
-components:
-  securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
+        - Calculator
