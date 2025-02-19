@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import CalculatorService from "../src/services/calculator.service";
+import CalculatorService from "../services/calculator.service";
 
 describe("CalculatorService", () => {
   let calculatorService: CalculatorService;
