@@ -1,13 +1,16 @@
 import { injectable, inject } from 'tsyringe';
-import BookRepository from '../repositories/calculator.repository';
+
 import { ILog } from '../models/DB/logRequest.model';
 
 @injectable()
 class CalculatorService {
 
-  constructor(@inject(BookRepository) private bookRepository: BookRepository) {}
+  constructor() {}
 
-  async calculate(number1: number, number2: number, operation: string): Promise<ILog> {
+  async calculate(number1: number, number2: number, operation: string): Promise<number> {
+
+    const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+    await wait(2000);
 
     let result: number;
     switch (operation) {
@@ -27,16 +30,7 @@ class CalculatorService {
       throw new Error('Invalid operator');
     }
 
-    const logRequest = {
-      operation,
-      number1,
-      number2,
-      result,
-      timestamp: new Date(),
-      responseTime: 100
-    };
-
-    return await this.bookRepository.newLogRequest(logRequest as ILog);
+    return result;
   }
 
 }
