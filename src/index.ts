@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 
-import express, { Request, Response } from 'express';
+import express from 'express';
 import dotenv from 'dotenv';
 import redoc from 'redoc-express';
 import fs from 'fs';
