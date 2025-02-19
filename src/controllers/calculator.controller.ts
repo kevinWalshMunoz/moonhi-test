@@ -22,7 +22,7 @@ class CalculatorController {
   calculate = async (req: Request, res: Response): Promise<void> => {
     try {
       const start = new Date();
-      const operation: paths["/api/calculator"]["post"]["requestBody"]["content"]["application/json"] = req.body;
+      const operation: paths["/api/v1/calculator"]["post"]["requestBody"]["content"]["application/json"] = req.body;
       const response: SuccessResponse = {
         status: 'success',
         operation: operation.operation,

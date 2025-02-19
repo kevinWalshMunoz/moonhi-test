@@ -9,7 +9,7 @@ servers:
     description: Local development server
 
 paths:
-  /api/calculator:
+  /api/v1/calculator:
     post:
       summary: Perform a calculation
       description: |

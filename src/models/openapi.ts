@@ -4,7 +4,7 @@
  */
 
 export interface paths {
-    "/api/calculator": {
+    "/api/v1/calculator": {
         parameters: {
             query?: never;
             header?: never;

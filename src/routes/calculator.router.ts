@@ -16,6 +16,6 @@ export class CalculatorRouter {
   }
 
   private initializeRoutes() {
-    this.router.post('/calculator', this.calculateController.calculate);
+    this.router.post('/v1/calculator', this.calculateController.calculate);
   }
 }
