@@ -19,7 +19,10 @@ class WebServer {
 
   constructor() {
     this._app = express();
-    this._app.use(cors());
+    this._app.use(cors({
+      origin: ['https://moonhi-web-9y4c8cgy6-kevinwalshmunozs-projects.vercel.app'],
+      credentials: true,
+    }));
     this.setServerOptions();
     this.createRoutes();
     this.startServer();
