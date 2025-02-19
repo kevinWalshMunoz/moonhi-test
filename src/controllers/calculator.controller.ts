@@ -3,7 +3,7 @@ import { container, injectable, inject } from 'tsyringe';
 import { paths } from '../models/openapi';
 
 import CalculatorService from '../services/calculator.service';
-import { ILog } from '../models/DB/logRequest.model';
+import { SuccessResponse, ErrorResponse } from '../models/requests/calculator.model';
 import { calculatorSchema } from '../validators/calculator.validator';
 import RedisService from '../services/redis.service';
 import LogRequestService from '../services/logRequest.service';
@@ -23,6 +23,18 @@ class CalculatorController {
     try {
       const start = new Date();
       const operation: paths["/api/calculator"]["post"]["requestBody"]["content"]["application/json"] = req.body;
+      const response: SuccessResponse = {
+        status: 'success',
+        operation: operation.operation,
+        inputs: {
+          number1: operation.number1,
+          number2: operation.number2,
+        },
+        result: 0,
+        timestamp: start.toISOString(),
+        responseTime: 0,
+
+      }
       const { error } = calculatorSchema.validate(operation);
 
       if (error) {
@@ -34,7 +46,9 @@ class CalculatorController {
         const end = new Date();
         const executionTime = end.getTime() - start.getTime();
         this.logRequestService.newLogRequest(operation.number1, operation.number2, operation.operation, Number(cachedResult), executionTime);
-        res.status(200).json(cachedResult);
+        response.result = Number(cachedResult);
+        response.responseTime = executionTime;
+        res.status(200).json(response);
         return;
       }
       const result = await this.calculatorService.calculate(operation.number1, operation.number2, operation.operation);
@@ -42,9 +56,16 @@ class CalculatorController {
       const end = new Date();
       const executionTime = end.getTime() - start.getTime();
       this.logRequestService.newLogRequest(operation.number1, operation.number2, operation.operation, Number(cachedResult), executionTime);
-      res.status(201).json(result);
+      response.result = Number(cachedResult);
+      response.responseTime = executionTime;
+      res.status(201).json(response);
     } catch (error: any) {
-      res.status(400).json({ message: error.message });
+      const responseError: ErrorResponse = {
+        status: 'error',
+        message: error.message,
+        timestamp: new Date().toISOString(),
+      };
+      res.status(400).json(responseError);
     }
   }
 }
